@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using TrainUp.Data; // Ensure the namespace is correct for your DbContext class
+
 namespace TrainUp
 {
     public class Program
@@ -9,13 +12,17 @@ namespace TrainUp
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            // Register the DbContext with the connection string from configuration
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+      options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
